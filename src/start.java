@@ -15,6 +15,9 @@ public class start
 		RB.insert(7, 7);
 		RB.insert(3, 3);
 		RB.insert(30, 30);
+		
+		//ggo
+		
 
 		System.out.println(RedBlack2UDraw(RB));
 		System.out.println(tD234ToUDraw(RB));
