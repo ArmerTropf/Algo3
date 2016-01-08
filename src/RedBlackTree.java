@@ -68,7 +68,7 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		
 		void down(boolean left) 
 		{
-			for(int i = m_Nodes.length-1;i >0;--i)
+			for(int i = m_Nodes.length-1 ;i > 0; --i)
 				m_Nodes[i] = m_Nodes[i-1];
 			m_Nodes[NODE] = left ? node(DAD).m_Left : node(DAD).m_Right;
 		}
@@ -84,14 +84,31 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		}
 		
 		
+//		void set(Node n,int kind,boolean copyColours) 
+//		{
+//			if (node(kind + 1) == null)
+//				m_Root = n;
+//			else if ( node(kind) != null ?	
+//					node(kind+1).m_Left == node(kind) :
+//					n.m_Key.compareTo(node(kind+1).m_Key) < 0)
+//					node(kind+1).m_Left = n;
+//			else
+//				node(kind+1).m_Right = n;
+//			if (copyColours && node(kind) != null && n != null)
+//				n.m_bIsRed = node(kind).m_bIsRed;
+//			m_Nodes[kind] = n;
+//		}
 		void set(Node n,int kind,boolean copyColours) 
 		{
-			if (node(kind+1) == null)
+			if (node(kind + 1) == null)
 				m_Root = n;
-			else if ( node(kind) != null ?	node(kind+1).m_Left == node(kind) : n.m_Key.compareTo(node(kind+1).m_Key) < 0)
+			else if ( node(kind) != null ?	
+					node(kind+1).m_Left == node(kind) :
+					n.m_Key.compareTo(node(kind+1).m_Key) < 0)
 				node(kind+1).m_Left = n;
 			else
 				node(kind+1).m_Right = n;
+			
 			if (copyColours && node(kind) != null && n != null)
 				n.m_bIsRed = node(kind).m_bIsRed;
 			m_Nodes[kind] = n;
@@ -158,7 +175,21 @@ public class RedBlackTree<K extends Comparable<K>,D>
 				son.m_bIsRed = dad.m_bIsRed;
 				dad.m_bIsRed = sonColour;
 			}
-				set(son,kind,false);
+			
+			 if (dad.m_Left == son) 
+			 {
+	                // clockwise rotation
+	                dad.m_Left = son.m_Right;
+	                son.m_Right = dad;
+	         } 
+			 else 
+			 {
+	                // counter-clockwise rotation
+	                dad.m_Right = son.m_Left;
+	                son.m_Left = dad;
+	         }
+			 
+			set(son,kind,false);
 		}
 		
 		public void split() 
@@ -221,6 +252,7 @@ public class RedBlackTree<K extends Comparable<K>,D>
 				return false;
 			h.down(RES < 0);
 		}
+		
 		h.set(new Node(key, data), h.NODE, false);
 		h.split();
 		m_Root.m_bIsRed = false;
