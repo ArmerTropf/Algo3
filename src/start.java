@@ -1,6 +1,9 @@
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
+
+import java_cup.runtime.Symbol;
 
 public class start 
 {
@@ -15,7 +18,6 @@ public class start
 		
 		int intInputCharacter;
 		int strInputCharacter;
-		
 		
 		
 		boolean boolInputComplete = false;
@@ -62,9 +64,9 @@ public class start
 						 
 						for (int i = 0 ; i < intInput ; i++ )
 						{
-							//Integer intRandom = (int)(Math.random() * 1000) ;
-							//vecIntInput.add(intRandom);
-							vecIntInput.add(i);
+							Integer intRandom = (int)(Math.random() * 1000) ;
+							vecIntInput.add(intRandom);
+//							vecIntInput.add(i);
 							boolInputComplete = true;
 
 						}
@@ -121,7 +123,7 @@ public class start
 	public static void main(String[]args)
 	{
 		
-		welcome();
+//		welcome();
 		
 //		RedBlackTree<Integer, Integer> RB = new RedBlackTree<>();
 //		
@@ -145,13 +147,103 @@ public class start
 //		pTree.insert("ruben");
 //		
 //		System.out.println(Patricia2UDraw(pTree));
+	
+	BoolExprParser boolExprParser = new BoolExprParser(new BoolExprScanner(new StringReader("(a | b)&(!c | !b) ")));
+	
+	try {
+		Symbol s = boolExprParser.parse();
 		
+		Node root = (Node) s.value;
+		
+		ROBDD robdd = new ROBDD();
+		
+		robdd.ConvertFromBool(root);
+		
+		System.out.println(roBDD2UDraw(robdd));
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
 	}
 	
 	
+	public static String roBDD2UDraw(ROBDD roBDD) 
+	{
+		ArrayList<ROBDD.Func> uniqueNodes = new ArrayList<>();
+		ROBDD.Func root = roBDD.m_Root;
+		String udrawText = "[";
+		if(root != null) {
+			if(root.isConstant())
+			{
+				udrawText += "l(\"" + root.hashCode() + "\", n(\"node\", [ a(\"OBJECT\", \""+ (root.isTrue()? "T" : "F") + "\"), a(\"_GO\", \"rectangle\")], [";
+			} else {
+				udrawText += "l(\"" + root.hashCode() + "\", n(\"node\", [ a(\"OBJECT\", \""+ (char) root.getVar() + "\"), a(\"_GO\", \"circle\")], [";
+			}
+		String children = "";
+		if(root.getThen(root.getVar()) != null)
+			children += goDownRoBDD(root.getThen(root.getVar()), root, uniqueNodes);
+		
+		if(root.getElse(root.getVar()) != null) {
+			children += "," + goDownRoBDD(root.getElse(root.getVar()), root, uniqueNodes);
+		}
+		
+		if(children.startsWith(","))
+			children = children.substring(1);
+		
+		udrawText += children;
+		
+		udrawText += "]))]";
+		
+		return udrawText;
+		}
+		return "[]";
+		
+	}
+	
+	public static String goDownRoBDD(ROBDD.Func go, ROBDD.Func parent, ArrayList<ROBDD.Func> uniqueNodes) {
+
+		String udrawText;
+		udrawText = "l(\"" + parent.hashCode() + "->" + go.hashCode() + "\", e(\"edge\", [a(\"OBJECT\", \"" + (go == parent.getThen(parent.getVar()) ? "1" : "0") + "\"), a(\"EDGECOLOR\", \"" + (go == parent.getThen(parent.getVar()) ? "#00FF00" : "#FF0000") + "\")],";
+		
+		if(uniqueNodes.contains(go)) {
+			// nur Referenz
+			udrawText += "r(\""+go.hashCode()+"\")))";
+		} else {		
+			// neuer Knoten mit Kindern
+			uniqueNodes.add(go);
+			
+			if(go.isConstant())
+			{
+				udrawText += "l(\"" + go.hashCode()+ "\", n(\"node\", [ a(\"OBJECT\", \""+ (go.isTrue()? "T" : "F") + "\"), a(\"_GO\", \"rectangle\")], [";
+			} else {
+				udrawText += "l(\"" + go.hashCode() + "\", n(\"node\", [ a(\"OBJECT\", \""+ (char) go.getVar() + "\"), a(\"_GO\", \"circle\")], [";
+			}
+			
+			String children = "";
+			
+			if(go.getThen(go.getVar()) != null)
+				children += goDownRoBDD(go.getThen(go.getVar()), go, uniqueNodes);
+			
+			if(go.getElse(go.getVar()) != null) {
+				children += "," + goDownRoBDD(go.getElse(go.getVar()), go, uniqueNodes);
+			}
+			if(children.startsWith(","))
+				children = children.substring(1);
+			
+			udrawText += children;
+			
+			udrawText += "]))))";
+		}
+		
+		return udrawText;
+
+	}
+	
 	
 
-	private static String RedBlack2UDraw(RedBlackTree RB)
+	public static String RedBlack2UDraw(RedBlackTree RB)
 	{
 		String udrawText = "[";
 		if(RB.m_Root != null) {
@@ -213,17 +305,22 @@ public class start
 			//Knoten erstellen
 			udrawText += "l(\"" + RB.m_Root.m_Key+ "\", n(\"node\", [ a(\"OBJECT\", \""+ name + "\")], [";
 			
+			String children = "";
 			//Links absteigen
 			if(RB.m_Root.m_Left != null)
-				udrawText += goDownTree2(RB.m_Root.m_Left, RB.m_Root);
+				children += goDownTree2(RB.m_Root.m_Left, RB.m_Root);
 			
 			// rechts absteigen
 			if(RB.m_Root.m_Right != null) 
 			{
-				if(RB.m_Root.m_Left != null && !RB.m_Root.m_Left.m_bIsRed)
-					udrawText += ",";
-				udrawText += goDownTree2(RB.m_Root.m_Right, RB.m_Root);
+				children += "," + goDownTree2(RB.m_Root.m_Right, RB.m_Root);
 			}
+			
+			if(children.startsWith(","))
+				children = children.substring(1);
+			
+			udrawText += children;
+			
 			//Abschluss der Klammern
 			udrawText += "]))]";
 			
@@ -249,17 +346,19 @@ public class start
 			udrawText += "l(\"" + parent.m_Key + "->" + go.m_Key + "\", e(\"edge\", [a(\"OBJECT\", \"\")],";
 			udrawText += "l(\"" + go.m_Key+ "\", n(\"node\", [ a(\"OBJECT\", \""+ name + "\")], [";
 		}
+		String children = "";
+		
 		if(go.m_Left != null)
-			udrawText += goDownTree2(go.m_Left, go);
+			children += goDownTree2(go.m_Left, go);
 		
 		if(go.m_Right != null) {
-			if(go.m_Left != null && !go.m_Left.m_bIsRed)
-				udrawText += ",";
-			udrawText += goDownTree2(go.m_Right, go);
+			children += "," + goDownTree2(go.m_Right, go);
 		}
-			
+		if(children.startsWith(","))
+			children = children.substring(1);
+		udrawText += children;
 		if(!go.m_bIsRed)
-		udrawText += "]))))";
+			udrawText += "]))))";
 		
 		return udrawText;
 	}
