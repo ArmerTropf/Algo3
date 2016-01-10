@@ -1,7 +1,7 @@
 
 public class UDG_RedBlack 
 {
-	private static String RedBlack2UDraw(RedBlackTree RB)
+	public static String RedBlack2UDraw(RedBlackTree RB)
 	{
 		String udrawText = "[";
 		if(RB.m_Root != null) {

@@ -20,17 +20,22 @@ public class UDG_TD234
 			//Knoten erstellen
 			udrawText += "l(\"" + RB.m_Root.m_Key+ "\", n(\"node\", [ a(\"OBJECT\", \""+ name + "\")], [";
 			
+			String children = "";
 			//Links absteigen
 			if(RB.m_Root.m_Left != null)
-				udrawText += goDownTree2(RB.m_Root.m_Left, RB.m_Root);
+				children += goDownTree2(RB.m_Root.m_Left, RB.m_Root);
 			
 			// rechts absteigen
 			if(RB.m_Root.m_Right != null) 
 			{
-				if(RB.m_Root.m_Left != null && !RB.m_Root.m_Left.m_bIsRed)
-					udrawText += ",";
-				udrawText += goDownTree2(RB.m_Root.m_Right, RB.m_Root);
+				children += "," + goDownTree2(RB.m_Root.m_Right, RB.m_Root);
 			}
+			
+			if(children.startsWith(","))
+				children = children.substring(1);
+			
+			udrawText += children;
+			
 			//Abschluss der Klammern
 			udrawText += "]))]";
 			
@@ -56,17 +61,19 @@ public class UDG_TD234
 			udrawText += "l(\"" + parent.m_Key + "->" + go.m_Key + "\", e(\"edge\", [a(\"OBJECT\", \"\")],";
 			udrawText += "l(\"" + go.m_Key+ "\", n(\"node\", [ a(\"OBJECT\", \""+ name + "\")], [";
 		}
+		String children = "";
+		
 		if(go.m_Left != null)
-			udrawText += goDownTree2(go.m_Left, go);
+			children += goDownTree2(go.m_Left, go);
 		
 		if(go.m_Right != null) {
-			if(go.m_Left != null && !go.m_Left.m_bIsRed)
-				udrawText += ",";
-			udrawText += goDownTree2(go.m_Right, go);
+			children += "," + goDownTree2(go.m_Right, go);
 		}
-			
+		if(children.startsWith(","))
+			children = children.substring(1);
+		udrawText += children;
 		if(!go.m_bIsRed)
-		udrawText += "]))))";
+			udrawText += "]))))";
 		
 		return udrawText;
 	}

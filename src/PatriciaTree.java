@@ -1,10 +1,5 @@
 public class PatriciaTree  {
 	protected Node m_Root;
-	
-	public Node getRoot() {
-		return m_Root;
-	}
-	
 	static boolean left(char key,int bitPos) {
 		return (key & (1 << bitPos)) == 0;
 	}
@@ -13,11 +8,10 @@ public class PatriciaTree  {
 		public int m_BitPos;
 		public Node m_Left;
 		public Node m_Right;
-		public boolean bIsLeft;
 		public Node(char key,int bitPos,Node succ) {
 			m_Key = key;
 			m_BitPos = bitPos;
-			bIsLeft = left(key,bitPos);
+			boolean bIsLeft = left(key,bitPos);
 			m_Left = bIsLeft ? this : succ;
 			m_Right = bIsLeft ? succ : this;
 		}

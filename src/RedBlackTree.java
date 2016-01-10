@@ -35,18 +35,16 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		
 		public boolean is2Node() 
 		{
-			return !m_bIsRed
+			return !this.m_bIsRed
 			&& (m_Left == null || !m_Left.m_bIsRed)
 			&& (m_Right == null || !m_Right.m_bIsRed);
 		}
 		
 	}
-	
-	
-	
+
 	class NodeHandler 
 	{
-		public final int NODE = 0;
+		public final int ROOT = 0;
 		public final int DAD = 1;
 		public final int G_DAD = 2;
 		public final int GG_DAD = 3;
@@ -55,12 +53,12 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		
 		NodeHandler(Node n) 
 		{
-			m_Nodes[NODE] = n;
+			m_Nodes[ROOT] = n;
 		}
 		
 		NodeHandler(NodeHandler h) 
 		{
-			m_Nodes[NODE] = h.m_Nodes[NODE];
+			m_Nodes[ROOT] = h.m_Nodes[ROOT];
 			m_Nodes[DAD] = h.m_Nodes[DAD];
 			m_Nodes[G_DAD] = h.m_Nodes[G_DAD];
 			m_Nodes[GG_DAD] = h.m_Nodes[GG_DAD];
@@ -70,12 +68,12 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		{
 			for(int i = m_Nodes.length-1 ;i > 0; --i)
 				m_Nodes[i] = m_Nodes[i-1];
-			m_Nodes[NODE] = left ? node(DAD).m_Left : node(DAD).m_Right;
+			m_Nodes[ROOT] = left ? node(DAD).m_Left : node(DAD).m_Right;
 		}
 		
 		boolean isNull() 
 		{
-			return m_Nodes[NODE] == null;
+			return m_Nodes[ROOT] == null;
 		}
 		
 		Node node(int kind) 
@@ -83,49 +81,35 @@ public class RedBlackTree<K extends Comparable<K>,D>
 			return (Node)m_Nodes[kind];
 		}
 		
-		
-//		void set(Node n,int kind,boolean copyColours) 
-//		{
-//			if (node(kind + 1) == null)
-//				m_Root = n;
-//			else if ( node(kind) != null ?	
-//					node(kind+1).m_Left == node(kind) :
-//					n.m_Key.compareTo(node(kind+1).m_Key) < 0)
-//					node(kind+1).m_Left = n;
-//			else
-//				node(kind+1).m_Right = n;
-//			if (copyColours && node(kind) != null && n != null)
-//				n.m_bIsRed = node(kind).m_bIsRed;
-//			m_Nodes[kind] = n;
-//		}
-		void set(Node n,int kind,boolean copyColours) 
+
+		void set(Node newNode,int kind,boolean copyColours) 
 		{
+			//Wenn Vater nicht vorhanden dann ist der neue Knoten die Wurzel
 			if (node(kind + 1) == null)
-				m_Root = n;
-			else if ( node(kind) != null ?	
-					node(kind+1).m_Left == node(kind) :
-					n.m_Key.compareTo(node(kind+1).m_Key) < 0)
-				node(kind+1).m_Left = n;
+				m_Root = newNode;
+			//Wenn der Vater vorhanden ist und ich selbst nicht null bin
+			else if (  ( node(kind) != null ) ?	( node(kind+1).m_Left == node(kind) ) :	newNode.m_Key.compareTo(node(kind+1).m_Key)  < 0)
+				node(kind+1).m_Left = newNode;
 			else
-				node(kind+1).m_Right = n;
+				node(kind+1).m_Right = newNode;
 			
-			if (copyColours && node(kind) != null && n != null)
-				n.m_bIsRed = node(kind).m_bIsRed;
-			m_Nodes[kind] = n;
+			if (copyColours && node(kind) != null && newNode != null)
+				newNode.m_bIsRed = node(kind).m_bIsRed;
+			m_Nodes[kind] = newNode;
 		}
 
 		public void join() 
 		{
-            if (node(NODE).is2Node()) 
+            if (node(ROOT).is2Node()) 
             {
                 if (node(DAD) == null &&
-                        node(NODE).m_Left != null &&
-                        node(NODE).m_Left.is2Node() &&
-                        node(NODE).m_Right != null &&
-                        node(NODE).m_Right.is2Node()) 
+                        node(ROOT).m_Left != null &&
+                        node(ROOT).m_Left.is2Node() &&
+                        node(ROOT).m_Right != null &&
+                        node(ROOT).m_Right.is2Node()) 
                 {
-                    node(NODE).m_Left.m_bIsRed = true;
-                    node(NODE).m_Right.m_bIsRed = true;
+                    node(ROOT).m_Left.m_bIsRed = true;
+                    node(ROOT).m_Right.m_bIsRed = true;
                 } 
                 else if (node(DAD) != null) 
                 {
@@ -139,13 +123,13 @@ public class RedBlackTree<K extends Comparable<K>,D>
                     }
                     if (nephew.node(DAD).is2Node()) 
                     {
-                        node(NODE).m_bIsRed = true;
+                        node(ROOT).m_bIsRed = true;
                         nephew.node(DAD).m_bIsRed = true;
                         node(DAD).m_bIsRed = false;
                     } 
                     else 
                     {
-                        if (!nephew.isNull() && nephew.node(NODE).m_bIsRed)
+                        if (!nephew.isNull() && nephew.node(ROOT).m_bIsRed)
                             nephew.rotate(DAD);
                         nephew.rotate(G_DAD);
                     }
@@ -197,7 +181,7 @@ public class RedBlackTree<K extends Comparable<K>,D>
             Node dad = node(DAD);
             if (dad != null && dad.m_bIsRed) 
             {
-                if ( node(G_DAD).m_Key.compareTo(dad.m_Key) < 0 != dad.m_Key.compareTo(node(NODE).m_Key) < 0)
+                if ( node(G_DAD).m_Key.compareTo(dad.m_Key) < 0 != dad.m_Key.compareTo(node(ROOT).m_Key) < 0)
                     rotate(DAD);
                 rotate(G_DAD);
             }
@@ -207,7 +191,7 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		
 		NodeHandler getNephew() 
 		{
-			Node node = node(NODE);
+			Node node = node(ROOT);
 			Node dad = node(DAD);
 			Node gDad = node(G_DAD);
 			Node brother = node == dad.m_Left ? dad.m_Right : dad.m_Left;
@@ -240,20 +224,21 @@ public class RedBlackTree<K extends Comparable<K>,D>
 	public boolean insert(K key, D data) 
 	{
 		NodeHandler h = new NodeHandler(m_Root);
+		
 		while (!h.isNull()) 
 		{
-			if (h.node(h.NODE).is4Node()) 
+			if (h.node(h.ROOT).is4Node()) 
 			{
-				h.node(h.NODE).convert4Node();
+				h.node(h.ROOT).convert4Node();
 				h.split();
 			}
-			final int RES = key.compareTo(h.node(h.NODE).m_Key);
+			final int RES = key.compareTo(h.node(h.ROOT).m_Key);
 			if (RES == 0)
 				return false;
 			h.down(RES < 0);
 		}
 		
-		h.set(new Node(key, data), h.NODE, false);
+		h.set(new Node(key, data), h.ROOT, false);
 		h.split();
 		m_Root.m_bIsRed = false;
 		return true;
@@ -266,13 +251,13 @@ public class RedBlackTree<K extends Comparable<K>,D>
 		while (!h.isNull()) 
 		{
 			h.join();
-			final int RES = key.compareTo(h.node(h.NODE).m_Key);
+			final int RES = key.compareTo(h.node(h.ROOT).m_Key);
 			
 			if (RES == 0) 
 			{
-				if (h.node(h.NODE).m_Right == null) 
+				if (h.node(h.ROOT).m_Right == null) 
 				{
-					h.set(h.node(h.NODE).m_Left,h.NODE,true);
+					h.set(h.node(h.ROOT).m_Left,h.ROOT,true);
 				} 
 				else 
 				{
@@ -280,15 +265,15 @@ public class RedBlackTree<K extends Comparable<K>,D>
 					h2.down(false); // go right
 					h2.join();
 					
-					while (h2.node(h2.NODE).m_Left != null) 
+					while (h2.node(h2.ROOT).m_Left != null) 
 					{
 						h2.down(true);
 						h2.join();
 					}
 		
-					h.node(h.NODE).m_Key = h2.node(h2.NODE).m_Key;
-					h.node(h.NODE).m_Data = h2.node(h2.NODE).m_Data;
-					h2.set(h2.node(h2.NODE).m_Right,h2.NODE,true);
+					h.node(h.ROOT).m_Key = h2.node(h2.ROOT).m_Key;
+					h.node(h.ROOT).m_Data = h2.node(h2.ROOT).m_Data;
+					h2.set(h2.node(h2.ROOT).m_Right,h2.ROOT,true);
 				}
 
 				if (m_Root != null)
