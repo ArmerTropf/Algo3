@@ -26,16 +26,14 @@ public class WriteUDGFile
 	
 	private static void startUDG(String strPathToUDraw , String strTreeFilename)
 	{
-		String test = "C:\\Program Files (x86)\\uDraw(Graph)\\bin\\uDrawGraph.exe ./" + strTreeFilename ;
+//		String test = "C:\\Program Files (x86)\\uDraw(Graph)\\bin\\uDrawGraph.exe ./" + strTreeFilename ;
 		
 		try 
 		{
-//			Runtime.getRuntime().exec(test);
 			Runtime.getRuntime().exec(strPathToUDraw + " " + strTreeFilename);
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

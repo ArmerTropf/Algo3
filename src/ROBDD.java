@@ -110,6 +110,9 @@ public class ROBDD
 			{
 				res = new Func(ciVar,T,E);
 				m_Unique.put(entry,res);
+				/*
+				 * Varible für den Einstieg zur rekursion
+				 */
 				m_Root = res;
 			}
 			return res;
@@ -120,25 +123,37 @@ public class ROBDD
 	{
 		if ( go.type()== Node.Type.VAR){ return genVar(go.name().charAt(0)); }
 
+		/*
+		 * f & g 
+		 */
 		if ( go.type()== Node.Type.AND )
 		{
 			return  ite(ConvertFromBool(go.left()),ConvertFromBool(go.right()),genFalse());
 		}
-		
+		/*
+		 * f | g 
+		 */
 		if ( go.type()== Node.Type.OR )
 		{
 			return  ite(ConvertFromBool(go.left()),genTrue(),ConvertFromBool(go.right()));
 		}
+		/*
+		 * !f  
+		 */
 		if ( go.type()== Node.Type.NOT )
 		{
 			return  ite(ConvertFromBool(go.left()),genFalse(),genTrue());
 		}
-		
+		/*
+		 * f => g 
+		 */
 		if ( go.type()== Node.Type.IMPLIES )
 		{
 			return  ite(ConvertFromBool(go.left()),ConvertFromBool(go.right()),genTrue());
 		}
-		
+		/*
+		 * f <=> g 
+		 */
 		if ( go.type()== Node.Type.EQUIV )
 		{
 			return  ite(ite(ConvertFromBool(go.left()),genTrue(),ConvertFromBool(go.right()))    , ite(ite(ConvertFromBool(go.left()),genFalse(), genTrue()),genTrue(),ite(ConvertFromBool(go.right()),genFalse(),genTrue()))  , genFalse());

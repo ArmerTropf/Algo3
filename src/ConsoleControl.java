@@ -38,12 +38,21 @@ public class ConsoleControl
 	
 	public static void welcome(String UDrawPath)
 	{
-		strUDrawPath = UDrawPath;
-		
-		 System.out.println("Bitte Struktur auswaehlen: ");
-		    System.out.print("Red-Black-Tree: 1 , Patricia-Tree: 2 , ROBDD: 3 :");
+			strUDrawPath = UDrawPath;
+			
+			System.out.println("Bitte Struktur auswaehlen: ");
+			System.out.print("Red-Black-Tree: 1 , Patricia-Tree: 2 , ROBDD: 3 :");
+			System.out.println("Eingabe: ");
+			
 		    
-		    intTree = Integer.parseInt(scanner.nextLine());
+		    try 
+		    {
+		    	intTree = Integer.parseInt(scanner.nextLine());
+		    } 
+		    catch (java.lang.NumberFormatException e) 
+		    {
+		    	System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+		    }
 		    
 		    switch (intTree) 
 		    {
@@ -78,8 +87,16 @@ public class ConsoleControl
     		 		+ "Zufallszahlen(1-1000): 3\n"
     		 		+ "Baum ausgeben: 5\n" );
     		 System.out.print("Eingabe: ");
-    		 		
-    		 intInput = Integer.parseInt(scanner.nextLine());
+    		 
+    		 try 
+    		 {
+    			 intInput = Integer.parseInt(scanner.nextLine());
+    		 } 
+    		 catch (java.lang.NumberFormatException e) 
+    		 {
+				System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+    		 }
+    		 
     		 
     		 switch (intInput) 
     		 {
@@ -132,7 +149,15 @@ public class ConsoleControl
     		 		+ "Loeschen: 2\n"
     		 		+ "Ausgabe: 5 : ");
     		 System.out.print("Eingabe: ");
-    		 intInput = Integer.parseInt(scanner.nextLine());
+    		
+    		 try 
+    		 {
+    			 intInput = Integer.parseInt(scanner.nextLine());
+    		 } 
+    		 catch (java.lang.NumberFormatException e) 
+    		 {
+				System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+    		 }
     		 
     		 switch (intInput) 
     		 {
@@ -171,7 +196,14 @@ public class ConsoleControl
     		 System.out.println("\nROBDD:\nAusdruck einfuegen: 1\n"
     		 		+ "Ausgabe: 5 : ");
     		 System.out.print("Eingabe: ");
-    		 intInput = Integer.parseInt(scanner.nextLine());
+    		 try 
+    		 {
+    			 intInput = Integer.parseInt(scanner.nextLine());
+    		 } 
+    		 catch (java.lang.NumberFormatException e) 
+    		 {
+				System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+    		 }
     		 
     		 switch (intInput) 
     		 {
@@ -179,6 +211,12 @@ public class ConsoleControl
     		 		System.out.print("Ausdruck Einfuegen:  ");
     		 		strInputWord = scanner.nextLine();
     		 
+    		 		/*
+    		 		 * a=>b|a&c
+    		 		 * a&b
+    		 		 * a|b
+    		 		 * a&!b
+    		 		 */
     		 		BoolExprParser boolExprParser = new BoolExprParser(new BoolExprScanner(new StringReader(strInputWord)));
 			
 					try 
@@ -189,7 +227,8 @@ public class ConsoleControl
 			 			robdd.ConvertFromBool(root);
 		 			
 			 			
-					} catch (Exception e) 
+					} 
+					catch (Exception e) 
 					{
 						e.printStackTrace();
 					}
@@ -222,7 +261,14 @@ public class ConsoleControl
 	    			+ "Programm beenden: 9\n"
 	    			+ "Neustart: 0\n\n"
 	    			+ "Eingabe: ");
-   		 	intInput = Integer.parseInt(scanner.nextLine());
+	    	try 
+	    	{
+	    		intInput = Integer.parseInt(scanner.nextLine());
+	    	} 
+	    	catch (java.lang.NumberFormatException e) 
+	    	{
+	    		System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+	    	}
    		 	
    		 	switch (intInput) 
    		 	{
@@ -260,7 +306,15 @@ public class ConsoleControl
 	    			+ "Programm beenden: 9\n"
 	    			+ "Neustart: 0\n\n"
 	    			+ "Eingabe: ");
-   		 	intInput = Integer.parseInt(scanner.nextLine());
+
+    		try 
+    		{
+    			intInput = Integer.parseInt(scanner.nextLine());
+    		} 
+    		catch (java.lang.NumberFormatException e) 
+    		{
+    			System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+    		}
    		 	
    		 	switch (intInput) 
    		 	{
@@ -292,7 +346,15 @@ public class ConsoleControl
 	    			+ "Programm beenden: 9\n"
 	    			+ "Neustart: 0\n\n"
 	    			+ "Eingabe: ");
-   		 	intInput = Integer.parseInt(scanner.nextLine());
+
+	    	try 
+	    	{
+	    		intInput = Integer.parseInt(scanner.nextLine());
+	    	} 
+	    	catch (java.lang.NumberFormatException e) 
+	    	{
+	    		System.out.println("\nFEHLER! Bitte eine Zahl eingeben!");
+	    	}
    		 	
    		 	switch (intInput) 
    		 	{
