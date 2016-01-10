@@ -30,8 +30,8 @@ public class WriteUDGFile
 		
 		try 
 		{
-			Runtime.getRuntime().exec(test);
-//			Runtime.getRuntime().exec(strPathToUDraw);
+//			Runtime.getRuntime().exec(test);
+			Runtime.getRuntime().exec(strPathToUDraw + " " + strTreeFilename);
 		} 
 		catch (IOException e) 
 		{

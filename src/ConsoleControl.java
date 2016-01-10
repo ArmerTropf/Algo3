@@ -32,11 +32,14 @@ public class ConsoleControl
 	
 	static Vector<Integer> vecIntInput = new Vector<>(1, 1);
 	
+	static String strUDrawPath;
 	
 	
 	
-	public static void welcome()
+	public static void welcome(String UDrawPath)
 	{
+		strUDrawPath = UDrawPath;
+		
 		 System.out.println("Bitte Struktur auswaehlen: ");
 		    System.out.print("Red-Black-Tree: 1 , Patricia-Tree: 2 , ROBDD: 3 :");
 		    
@@ -224,19 +227,19 @@ public class ConsoleControl
    		 	switch (intInput) 
    		 	{
 			 	case 1: 
-			 		WriteUDGFile.createUDGFile(UDG_RedBlack.RedBlack2UDraw(RBTree), "RBTree", "Keine Ahnung");
+			 		WriteUDGFile.createUDGFile(UDG_RedBlack.RedBlack2UDraw(RBTree), "RBTree", strUDrawPath);
 			 		//System.out.println(UDG_RedBlack.RedBlack2UDraw(RBTree));
 			 		break;
 				
 			 	case 2: 
-			 		WriteUDGFile.createUDGFile(UDG_TD234.topDown234ToUDraw(RBTree), "TD234Tree", "Keine Ahnung");
+			 		WriteUDGFile.createUDGFile(UDG_TD234.topDown234ToUDraw(RBTree), "TD234Tree", strUDrawPath);
 			 		//System.out.println(UDG_TD234.topDown234ToUDraw(RBTree));
 					break;
 			 	case 5: 
 			 		RBTreeIn();
 					break;
 			 	case 0: 
-			 		welcome();
+			 		welcome(strUDrawPath);
 					break;
 			 	case 9: 
 			 		System.out.println("Programm beendet");
@@ -262,7 +265,7 @@ public class ConsoleControl
    		 	switch (intInput) 
    		 	{
 			 	case 1: 
-			 		WriteUDGFile.createUDGFile(UDG_Patricia.Patricia2UDraw(PTree), "PTree", "Keine Ahnung");
+			 		WriteUDGFile.createUDGFile(UDG_Patricia.Patricia2UDraw(PTree), "PTree", strUDrawPath);
 			 		//System.out.println(UDG_RedBlack.RedBlack2UDraw(RBTree));
 			 		break;
 			 	case 5: 
@@ -294,7 +297,7 @@ public class ConsoleControl
    		 	switch (intInput) 
    		 	{
 			 	case 1: 
-			 		WriteUDGFile.createUDGFile(UDG_ROBDD.roBDD2UDraw(robdd), "ROBDD", "Keine Ahnung");
+			 		WriteUDGFile.createUDGFile(UDG_ROBDD.roBDD2UDraw(robdd), "ROBDD", strUDrawPath);
 			 		//System.out.println(UDG_RedBlack.RedBlack2UDraw(RBTree));
 			 		break;
 			 	case 0: 
