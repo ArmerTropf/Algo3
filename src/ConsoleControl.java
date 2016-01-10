@@ -272,7 +272,7 @@ public class ConsoleControl
 			 		PTreeIn();
 					break;
 			 	case 0: 
-			 		welcome();
+			 		welcome(strUDrawPath);
 					break;
 			 	case 9: 
 			 		System.out.println("Programm beendet");
@@ -301,7 +301,7 @@ public class ConsoleControl
 			 		//System.out.println(UDG_RedBlack.RedBlack2UDraw(RBTree));
 			 		break;
 			 	case 0: 
-			 		welcome();
+			 		welcome(strUDrawPath);
 					break;
 			 	case 9: 
 			 		System.out.println("Programm beendet");
