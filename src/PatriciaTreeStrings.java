@@ -75,7 +75,6 @@ public class PatriciaTreeStrings
 			} 
 			else 
 			{
-				// already inserted
 				return false;
 			}
 			
@@ -85,12 +84,20 @@ public class PatriciaTreeStrings
 			
 			return true;
 		}
+
+				
 		boolean remove(String s) 
 		{
 			NodeHandler h = new NodeHandler(m_Root);
 			h.search(s);
 			
-			if (h.isNull() || h.node(h.NODE).m_Key != s) 
+			
+			/*
+			 * Wenn NoteHandler Null oder Wurzelknoten nicht der 
+			 * Wert des Strings ist, dann False
+			 *  
+			 */
+			if (h.isNull() || !s.equals(h.node(h.NODE).m_Key)) 
 			{
 				return false;
 			} 
@@ -102,7 +109,6 @@ public class PatriciaTreeStrings
 				h2.set(h.node(h.NODE),h2.NODE);
 				h.set(h.brother(h.NODE),h.DAD);
 			}
-			
 			return true;
 		}
 	
@@ -149,11 +155,18 @@ public class PatriciaTreeStrings
 			
 			void search(String s,int maxPos) {
 				int lastBitPos = -1;
-				while ( !isNull() && lastBitPos < node(NODE).m_BitPos && maxPos > node(NODE).m_BitPos) {
+				
+				while ( !isNull() && lastBitPos < node(NODE).m_BitPos 
+						&& maxPos > node(NODE).m_BitPos) 
+				{
 					lastBitPos = node(NODE).m_BitPos;
 					down(left(s,lastBitPos));
 				}
 			}
+			/*
+			 * Abstieg bis zum Ende des Baums.
+			 * 
+			 */
 			void search(String s) {
 				search(s,Integer.MAX_VALUE);
 			}

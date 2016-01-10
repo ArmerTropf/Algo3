@@ -37,7 +37,7 @@ public class ConsoleControl
 	
 	public static void welcome()
 	{
-		 System.out.println("Bitte Struktur auswählen: ");
+		 System.out.println("Bitte Struktur auswaehlen: ");
 		    System.out.print("Red-Black-Tree: 1 , Patricia-Tree: 2 , ROBDD: 3 :");
 		    
 		    intTree = Integer.parseInt(scanner.nextLine());
@@ -70,28 +70,30 @@ public class ConsoleControl
 		boolOutputComplete = false;
 		while (!boolInputComplete)
     	{
-    		 System.out.println("Rot-Schwarz:\nEinfügen: 1\n"
-    		 		+ "Löschen: 2 \n"
+    		 System.out.println("\nRot-Schwarz:\nEinfuegen: 1\n"
+    		 		+ "Loeschen: 2 \n"
     		 		+ "Zufallszahlen(1-1000): 3\n"
-    		 		+ "Ausgabe: 5 : ");
+    		 		+ "Baum ausgeben: 5\n" );
+    		 System.out.print("Eingabe: ");
+    		 		
     		 intInput = Integer.parseInt(scanner.nextLine());
     		 
     		 switch (intInput) 
     		 {
     		 	case 1: 
-    		 		System.out.print("Zahl zum Einfügen:  ");
+    		 		System.out.print("Zahl zum Einfuegen eingeben:  ");
     		 		intInput = Integer.parseInt(scanner.nextLine());
     		 		RBTree.insert(intInput, intInput);
     		 		break;
 				
     		 	case 2: 
-					System.out.print("Zahl zum Löschen:  ");
+					System.out.print("Zahl zum Loeschen eingeben:  ");
 					intInput = Integer.parseInt(scanner.nextLine());
 					RBTree.remove(intInput);
 					break;
     		 	case 3: 
     		 		
-    		 		System.out.print("Anzahl der Zahlen:  ");
+    		 		System.out.print("Anzahl der Zahlen eingeben:  ");
 					intInput = Integer.parseInt(scanner.nextLine());
 					 
 					for (int i = 0 ; i < intInput ; i++ )
@@ -123,21 +125,22 @@ public class ConsoleControl
 		String strInputWord;	
 		while (!boolInputComplete)
     	{
-    		 System.out.println("Patricia Tree:\nWort Einfügen: 1\n"
-    		 		+ "Löschen: 2\n"
+    		 System.out.println("\nPatricia Tree:\nWort einfuegen: 1\n"
+    		 		+ "Loeschen: 2\n"
     		 		+ "Ausgabe: 5 : ");
+    		 System.out.print("Eingabe: ");
     		 intInput = Integer.parseInt(scanner.nextLine());
     		 
     		 switch (intInput) 
     		 {
     		 	case 1: 
-    		 		System.out.print("Wort zum Einfügen:  ");
+    		 		System.out.print("\nWort zum Einfuegen eingeben:  ");
     		 		strInputWord = scanner.nextLine();
     		 		PTree.insert(strInputWord);
     		 		break;
 				
     		 	case 2: 
-					System.out.print("Wort zum Löschen:  ");
+					System.out.print("\nWort zum Loeschen eingeben:  ");
 					strInputWord = scanner.nextLine();
 					PTree.remove(strInputWord);
 					break;
@@ -162,14 +165,15 @@ public class ConsoleControl
 		String strInputWord;	
 		while (!boolInputComplete)
     	{
-    		 System.out.println("\nROBDD:\nAusdruck einfügen: 1\n"
+    		 System.out.println("\nROBDD:\nAusdruck einfuegen: 1\n"
     		 		+ "Ausgabe: 5 : ");
+    		 System.out.print("Eingabe: ");
     		 intInput = Integer.parseInt(scanner.nextLine());
     		 
     		 switch (intInput) 
     		 {
     		 	case 1: 
-    		 		System.out.print("Ausdruck Einfügen:  ");
+    		 		System.out.print("Ausdruck Einfuegen:  ");
     		 		strInputWord = scanner.nextLine();
     		 
     		 		BoolExprParser boolExprParser = new BoolExprParser(new BoolExprScanner(new StringReader(strInputWord)));
@@ -208,8 +212,8 @@ public class ConsoleControl
 		boolOutputComplete = false;
 		while (!boolOutputComplete)
     	{
-    		System.out.println("Ansicht wählen: \n");
-	    	System.out.print("Rot-Schwarz-Baum: 1\n"
+
+	    	System.out.print("\nRot-Schwarz-Baum: 1\n"
 	    			+ "TopDown 234: 2\n"
 	    			+ "Baum modifizieren: 5\n"
 	    			+ "Programm beenden: 9\n"
@@ -248,7 +252,6 @@ public class ConsoleControl
 		boolOutputComplete = false;
 		while (!boolOutputComplete)
     	{
-    		System.out.println("Optionen: \n");
 	    	System.out.print("\nPatricia Tree: 1\n"
 	    			+ "Baum modifizieren: 5\n"
 	    			+ "Programm beenden: 9\n"
@@ -304,6 +307,6 @@ public class ConsoleControl
     	}
 
 	}
-	
+
 
 }
